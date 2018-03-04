@@ -1,12 +1,15 @@
-import java.rmi.registry.Registry;
-import java.rmi.registry.LocateRegistry;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+import java.util.Scanner;
         
 public class Server implements RmiInterface {
         
@@ -15,18 +18,18 @@ public class Server implements RmiInterface {
         
     public static void main(String args[]) {
     	  
-    	String hostIP = null;
+    	String hostIP = "192.168.56.101";
       	// parser CL arguments
-      	if(args.length < 2) {
-      		System.out.println("Usage : java Server -host-ip [host-ip]");
-      		System.exit(1);
-      	}else {
-      		for(int i=0; i < args.length; ++i) {
-      			if(args[i].equals("-host-ip")) {
-      				hostIP = args[i+1];
-      			}
-      		}
-      	}
+//      	if(args.length < 2) {
+//      		System.out.println("Usage : java Server -host-ip [host-ip]");
+//      		System.exit(1);
+//      	}else {
+//      		for(int i=0; i < args.length; ++i) {
+//      			if(args[i].equals("-host-ip")) {
+//      				hostIP = args[i+1];
+//      			}
+//      		}
+//      	}
       	
         try {
         	
@@ -37,7 +40,7 @@ public class Server implements RmiInterface {
 
             // Bind the remote object's stub in the registry
             Registry registry = LocateRegistry.getRegistry();
-            registry.bind("RMI", stub);
+            registry.rebind("RMI", stub);
 
             
             System.err.println("Server ready");
@@ -64,14 +67,15 @@ public class Server implements RmiInterface {
 		}
 		
 		
-		File newfile = new File("userfiles", fileName + ".txt");
-		File fileinuse = new File("userfiles", fileName + ".txt.lock");
+		
+		File newfile = new File("userfiles", fileName );
+		File fileinuse = new File("userfiles", fileName + "lock");
 		if(newfile.exists() || fileinuse.exists()){
 			return "file name taken!";
 		}
-		else if(concurrency.containsValue(fileName)){
-			return "file name in use!";
-		}
+//		else if(concurrency.containsValue(fileName)){
+//			return "file name in use!";
+//		}
 
 		try {
 			newfile.createNewFile();
@@ -89,12 +93,32 @@ public class Server implements RmiInterface {
 	@Override
 	public String writeFile(String fileName) throws RemoteException {
 		// TODO Auto-generated method stub
+		File openFile = new File("userfiles",fileName);
+		
+		if(!openFile.exists())
+			return "file does not exist!";
+		
+		try {
+			BufferedWriter fw = new BufferedWriter(new FileWriter(fileName));
+			System.out.println("Write to file: (End with \"EOF\")");
+			Scanner sc = new Scanner(System.in);
+			while(sc.nextLine() != "EOF") {
+				
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return null;
 	}
 
 	@Override
 	public String readFile(String fileName) throws RemoteException {
 		// TODO Auto-generated method stub
+
+		
+		
 		return null;
 	}
 

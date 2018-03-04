@@ -3,3 +3,7 @@
 **/*cache
 **/logs
 *.swp
+testing.java
+*.txt
+**/userfiles/
+**/userFiles/

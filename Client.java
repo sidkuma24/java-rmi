@@ -17,21 +17,20 @@ public class Client {
 
     	String input = null;
     	int choice = 0;
-        String hostIP = null;
+        String hostIP = "192.168.56.101";
     	// parser CL arguments
-    	if(args.length < 2) {
-    		System.out.println("Usage : java Client -host-ip [host-ip]");
-    		System.exit(1);
-    	}else {
-    		for(int i=0; i < args.length; ++i) {
-    			if(args[i].equals("-host-ip")) {
-    				hostIP = args[i+1];
-    			}
-    		}
-    	}
+//    	if(args.length < 2) {
+//    		System.out.println("Usage : java Client -host-ip [host-ip]");
+//    		System.exit(1);
+//    	}else {
+//    		for(int i=0; i < args.length; ++i) {
+//    			if(args[i].equals("-host-ip")) {
+//    				hostIP = args[i+1];
+//    			}
+//    		}
+//    	}
     	
         try {
-        	
             registry = LocateRegistry.getRegistry(hostIP);//put your hosts ip here
             System.out.println("Connecting to Host: " + hostIP + "...");
             stub = (RmiInterface) registry.lookup("RMI");
